@@ -1,7 +1,11 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-const WelcomePage = ({ navigation }) => {
+const index = () => {
+
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       <Image
@@ -66,4 +70,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WelcomePage;
+export default index;
