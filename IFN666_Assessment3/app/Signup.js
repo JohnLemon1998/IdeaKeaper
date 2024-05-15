@@ -4,34 +4,35 @@ import { useNavigation } from '@react-navigation/native';
 import axios from 'axios'
 
 const SignupPage = () => {
-  const [username, setUsername] = useState('');
+  const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
 
   const handleSignup = async () => {
     try {
-        const response = await axios.post('http://localhost:3000/api/user', {
-          username: username,
-          password: password,
-        }, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-        console.log(response.data);
-      } catch (error) {
-        console.error('Error:', error);
+      const userData = { name, password };
+      const url = 'http://localhost:3000/api/signup'; 
+      const response = await axios.post(url, userData);
+      
+      navigation.navigate('Login');
+      
+    } catch (error) {
+      if (error.response) {
+        console.error('Error:', error.response.data);
+      } else {
+        console.error('Error:', error.message);
       }
-    };
+    }
+  };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Sign Up</Text>
       <TextInput
         style={styles.input}
-        placeholder="Username"
-        value={username}
-        onChangeText={setUsername}
+        placeholder="name"
+        value={name}
+        onChangeText={setName}
       />
       <TextInput
         style={styles.input}

@@ -1,21 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-router.get("/books", (req, res) => {
-
-  const books = [
-    { title: "To Kill a Mockingbird", author: "Harper Lee" },
-    { title: "1984", author: "George Orwell" },
-    { title: "Pride and Prejudice", author: "Jane Austen" },
-  ];
-
-  res.json(books);
-});
-
-router.get("/books/:title", (req, res) => {
-  const title = req.params.title;
-  res.send(`You requested information about the book with title: ${title}`);
-});
+const bcrypt = require('bcrypt');
 
 router.get("/api/user", async (req, res) => {
 
@@ -27,11 +13,14 @@ router.get("/api/user", async (req, res) => {
   }
 });
 
-router.post("/api/user", async (req, res) => {
+router.post("/api/signup", async (req, res) => {
   try {
 
-    const { id, name, password } = req.body;
-    await req.db("users").insert({ id, name, password });
+    const { name, password } = req.body;
+
+    const hashPassword = await bcrypt.hash(password,10);
+
+    await req.db("users").insert({ name, password: hashPassword });
 
     res.json({ error: false, message: "User added successfully" });
   } catch (error) {
@@ -39,17 +28,23 @@ router.post("/api/user", async (req, res) => {
   }
 });
 
-
-router.get("/api/city/:CountryCode", async (req, res) => {
+router.post("/api/login", async (req, res) => {
   try {
-    const [cities] = await req.db.query(
-      "SELECT name, district FROM city WHERE CountryCode = ?",
-      [req.params.CountryCode]
-    );
-    res.json({ error: false, cities });
+    const { name, password } = req.body;
+
+    const user = await req.db("users").where({ name }).first();
+
+    console.log("user",user);
+
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      return res.status(401).json({ error: true, message: "Invalid username or password" });
+    }
+
+    res.json({ error: false, message:"Login sucessfully!!" });
   } catch (error) {
-    res.json({ error: true, message: error });
+    res.status(500).json({ error: true, message: error.message });
   }
 });
+
 
 module.exports = router;

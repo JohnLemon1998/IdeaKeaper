@@ -3,13 +3,32 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-nativ
 import { useNavigation } from '@react-navigation/native';
 
 const LoginPage = () => {
-  const [username, setUsername] = useState('');
+  const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
 
-  const handleLogin = () => {
-    // Handle login logic here
-    console.log('Logging in with:', username, password);
+  const handleLogin = async() => {
+    try {
+      const response = await fetch('http://localhost:3000/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, password }),
+      });
+
+      // レスポンスの解析
+      const data = await response.json();
+
+      if (data.error) {
+        console.error('Login error:', data.message);
+      } else {
+        console.log('Login successful');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+    }
+    
   };
 
   return (
@@ -17,9 +36,9 @@ const LoginPage = () => {
       <Text style={styles.title}>Login</Text>
       <TextInput
         style={styles.input}
-        placeholder="Username"
-        value={username}
-        onChangeText={setUsername}
+        placeholder="name"
+        value={name}
+        onChangeText={setName}
       />
       <TextInput
         style={styles.input}
