@@ -1,16 +1,28 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios'
 
 const SignupPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
 
-  const handleSignup = () => {
-    // Handle signup logic here
-    console.log('Signing up with:', username, password);
-  };
+  const handleSignup = async () => {
+    try {
+        const response = await axios.post('http://localhost:3000/api/user', {
+          username: username,
+          password: password,
+        }, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        console.log(response.data);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
 
   return (
     <View style={styles.container}>
