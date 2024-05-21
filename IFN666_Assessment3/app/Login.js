@@ -19,11 +19,13 @@ const LoginPage = () => {
 
       // レスポンスの解析
       const data = await response.json();
+      const userId = data.id;
 
       if (data.error) {
         console.error('Login error:', data.message);
       } else {
         console.log('Login successful');
+        navigation.navigate('TopPage',{ userId });
       }
     } catch (error) {
       console.error('Login error:', error);

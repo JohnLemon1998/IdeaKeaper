@@ -40,7 +40,23 @@ router.post("/api/login", async (req, res) => {
       return res.status(401).json({ error: true, message: "Invalid username or password" });
     }
 
-    res.json({ error: false, message:"Login sucessfully!!" });
+    res.json({ error: false, id : user.id });
+  } catch (error) {
+    res.status(500).json({ error: true, message: error.message });
+  }
+});
+
+router.get("/api/note", async (req, res) => {
+  try {
+    const userId = req.query.userId;
+
+    console.log(userId); 
+
+    const notes = await req.db.from("notes").where({ user_id: userId });
+
+    console.log(notes);
+
+    res.json({ error: false, notes });
   } catch (error) {
     res.status(500).json({ error: true, message: error.message });
   }
