@@ -25,6 +25,14 @@ const AddNote = () => {
       }
     }
   };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.label}>Title</Text>
+      <TextInput
+        style={styles.input}
+        value={title}
+        onChangeText={setTitle}
         placeholder="Enter note title"
       />
       <Text style={styles.label}>Content</Text>
