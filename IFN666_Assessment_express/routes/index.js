@@ -50,17 +50,92 @@ router.get("/api/note", async (req, res) => {
   try {
     const userId = req.query.userId;
 
-    console.log(userId); 
-
     const notes = await req.db.from("notes").where({ user_id: userId });
-
-    console.log(notes);
 
     res.json({ error: false, notes });
   } catch (error) {
     res.status(500).json({ error: true, message: error.message });
   }
 });
+
+router.get("/api/note/:noteId", async (req, res) => {
+
+  try {
+    const noteId = req.params.noteId;
+
+    const note = await req.db.from("notes").where({ id: noteId }).first();
+
+    if (!note) {
+      return res.status(404).json({ error: true, message: "Note not found" });
+    }
+
+    res.json({ error: false, note });
+  } catch (error) {
+    res.status(500).json({ error: true, message: error.message });
+  }
+});
+
+router.post("/api/note", async (req, res) => {
+  try {
+    const { userId, title, content } = req.body;
+
+    await req.db("notes").insert({
+      user_id: userId,
+      title: title,
+      content: content
+    });
+
+    res.json({ error: false, message: "Note inserted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: true, message: error.message });
+  }
+});
+
+router.put("/api/note/:noteId", async (req, res) => {
+  try {
+    const noteId = req.params.noteId;
+    const { title, content } = req.body;
+
+    if (!title || !content) {
+      return res.status(400).json({ error: true, message: "Title and content are required" });
+    }
+
+    const note = await req.db.from("notes").where({ id: noteId }).first();
+
+    if (!note) {
+      return res.status(404).json({ error: true, message: "Note not found" });
+    }
+
+    // Update the note
+    await req.db.from("notes").where({ id: noteId }).update({ title, content });
+
+    res.json({ error: false, message: "Updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: true, message: error.message });
+  }
+});
+
+router.delete("/api/note/:noteId", async (req, res) => {
+  try {
+    const noteId = req.params.noteId;
+
+    // Find the note
+    const note = await req.db.from("notes").where({ id: noteId }).first();
+
+    if (!note) {
+      return res.status(404).json({ error: true, message: "Note not found" });
+    }
+
+    // Delete the note
+    await req.db.from("notes").where({ id: noteId }).del();
+
+    res.json({ error: false, message: "Note deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: true, message: error.message });
+  }
+});
+
+
 
 
 module.exports = router;
