@@ -14,7 +14,8 @@ const TopPage = () => {
     const fetchNotes = async () => {
       try {
         const response = await axios.get(`http://localhost:3000/api/note?userId=${userId}`);
-        setNotes(response.data.notes);
+        const sortedNotes = response.data.notes.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+        setNotes(sortedNotes);
       } catch (error) {
         console.error('Error:', error.message);
       }
@@ -25,6 +26,14 @@ const TopPage = () => {
 
   const handleAddNote = () => {
     navigation.navigate('AddNote', { userId:userId });
+  };
+
+  const handleSettingTop = () => {
+    navigation.navigate('SettingTop', { userId:userId });
+  };
+
+  const handleNotePress = (noteId) => {
+    navigation.navigate('NoteDetail', { userId: userId, noteId: noteId });
   };
 
   const formatDate = (dateString) => {
@@ -39,8 +48,8 @@ const TopPage = () => {
         <Text style={styles.headerText}>Notes</Text>
 
         <View style={styles.buttonsContainer}>
-          <TouchableOpacity onPress={handleAddNote}>
-            <Ionicons name="add" size={24} color="black" />
+          <TouchableOpacity onPress={handleSettingTop}>
+            <Ionicons name="settings" size={24} color="black" />
           </TouchableOpacity>
         </View>
       </View>
@@ -50,13 +59,13 @@ const TopPage = () => {
       <ScrollView style={styles.scrollView}>
         <View style={styles.notesContainer}>
           {notes.map((note, index) => (
-            <View key={index} style={styles.noteContainer}>
+             <TouchableOpacity key={index} style={styles.noteContainer} onPress={() => handleNotePress(note.id)}>
               <View style={styles.note}>
                 <Text style={styles.noteTitle}>{note.title}</Text>
                 <Text numberOfLines={1} ellipsizeMode="tail" style={styles.noteContent}>{note.content}</Text>
                 <Text style={styles.date}>{formatDate(note.updated_at)}</Text>
               </View>
-            </View>
+            </TouchableOpacity>
           ))}
         </View>
       </ScrollView>
@@ -71,6 +80,7 @@ const TopPage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'whitesmoke',
   },
   header: {
     flexDirection: 'row',
@@ -90,6 +100,7 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
+    marginTop:3,
   },
   notesContainer: {
     paddingHorizontal: 16,

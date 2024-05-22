@@ -7,6 +7,8 @@ import Login from './Login';
 import AddNote from './AddNote';
 import Signup from './Signup';
 import TopPage from './TopPage';
+import NoteDetail from './NoteDetail';
+import SettingTop from './SettingTop';
 
 const Stack = createStackNavigator();
 
@@ -19,6 +21,8 @@ function App() {
         <Stack.Screen name="Signup" component={Signup} />
         <Stack.Screen name="TopPage" component={TopPage} />
         <Stack.Screen name="AddNote" component={AddNote} />
+        <Stack.Screen name="NoteDetail" component={NoteDetail} />
+        <Stack.Screen name="SettingTop" component={SettingTop} />
       </Stack.Navigator>
     </NavigationContainer>
   );
