@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
+import { GlobalLayout } from "../components/Layout";
 
 const AddNote = () => {
   const route = useRoute();
@@ -53,7 +54,7 @@ const AddNote = () => {
   }, [errorMessage]);
 
   return (
-    <View style={styles.container}>
+    <GlobalLayout>
       <View style={styles.header}>
         <TouchableOpacity onPress={backToNotes}>
           <Ionicons name="arrow-back" size={24} color="black" />
@@ -82,15 +83,11 @@ const AddNote = () => {
           <Text style={styles.buttonText}>Save Note</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </GlobalLayout>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'whitesmoke',
-  },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
