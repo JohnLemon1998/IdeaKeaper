@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios'
+import { GlobalLayout } from "../components/Layout";
 
 const SignupPage = () => {
   const [name, setName] = useState('');
@@ -26,37 +27,37 @@ const SignupPage = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Sign Up</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="name"
-        value={name}
-        onChangeText={setName}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
-      />
-      <TouchableOpacity style={styles.button} onPress={handleSignup}>
-        <Text style={styles.buttonText}>Sign Up</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-        <Text style={styles.signupText}>Already have an account? Log in here</Text>
-      </TouchableOpacity>
-    </View>
+    <GlobalLayout>
+       <View style={styles.container}>
+         <Text style={styles.title}>Sign Up</Text>
+         <TextInput
+           style={styles.input}
+           placeholder="name"
+           value={name}
+           onChangeText={setName}
+           />
+         <TextInput
+           style={styles.input}
+           placeholder="Password"
+           secureTextEntry
+           value={password}
+           onChangeText={setPassword}
+           />
+         <TouchableOpacity style={styles.button} onPress={handleSignup}>
+           <Text style={styles.buttonText}>Sign Up</Text>
+         </TouchableOpacity>
+         <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+           <Text style={styles.signupText}>Already have an account? Log in here</Text>
+         </TouchableOpacity>
+       </View>
+     </GlobalLayout>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
   },
   title: {
     fontSize: 24,

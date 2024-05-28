@@ -13,6 +13,36 @@ router.get("/api/user", async (req, res) => {
   }
 });
 
+router.put('/api/users/:userId/change-username', async(req, res) => {
+  const userId = req.params.userId;
+  const { newUserName } = req.body;
+
+  const user = await req.db.from("users").where({ id: userId }).first();
+  if (!user) {
+    return res.status(404).json({ error: true, message: 'User not found' });
+  }
+
+  await req.db.from("users").where({ id: userId }).update({ name: newUserName });
+
+  res.json({ error: false, message: 'Username updated successfully' });
+});
+
+router.put('/api/users/:userId/change-password', async(req, res) => {
+  const userId = req.params.userId;
+  const { newPassword } = req.body;
+
+  const user = await req.db.from("users").where({ id: userId }).first();
+  if (!user) {
+    return res.status(404).json({ error: true, message: 'User not found' });
+  }
+
+  const hashPassword = await bcrypt.hash(newPassword,10);
+
+  await req.db.from("users").where({ id: userId }).update({ password: hashPassword });
+
+  res.json({ error: false, message: 'password updated successfully' });
+});
+
 router.post("/api/signup", async (req, res) => {
   try {
 
@@ -39,6 +69,7 @@ router.post("/api/login", async (req, res) => {
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(401).json({ error: true, message: "Invalid username or password" });
     }
+    console.log(user.password);
 
     res.json({ error: false, id : user.id });
   } catch (error) {

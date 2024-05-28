@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, ScrollView  } from 'react-nat
 import axios from 'axios';
 import { useRoute,useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
+import { GlobalLayout } from "../components/Layout";
 
 const TopPage = () => {
   const route = useRoute();
@@ -42,8 +43,8 @@ const TopPage = () => {
   };
 
   return (
-    <View style={styles.container}>
 
+    <GlobalLayout>
       <View style={styles.header}>
         <Text style={styles.headerText}>Notes</Text>
 
@@ -73,15 +74,11 @@ const TopPage = () => {
       <TouchableOpacity style={styles.addButton} onPress={handleAddNote}>
         <Ionicons name="add" size={32} color="white" />
       </TouchableOpacity>
-    </View>
+    </GlobalLayout>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'whitesmoke',
-  },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',

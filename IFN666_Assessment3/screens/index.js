@@ -1,17 +1,19 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { GlobalLayout } from "../components/Layout";
 
 const index = () => {
 
   const navigation = useNavigation();
 
   return (
+   <GlobalLayout>
     <View style={styles.container}>
       <Image
         source={require('../assets/images/homePageIcon.webp')}
         style={styles.image}
-      />
+        />
       <Text style={styles.title}>Welcome to Idea Keeper App</Text>
       <Text style={styles.subtitle}>Your idea won't be missing anymore</Text>
       
@@ -23,17 +25,15 @@ const index = () => {
           <Text style={styles.buttonText}>SignUp</Text>
         </TouchableOpacity>
       </View>
-
-    </View>
+     </View>
+    </GlobalLayout>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
   },
   image: {
     width: '100%',

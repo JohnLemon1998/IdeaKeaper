@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { GlobalLayout } from "../components/Layout";
 
 const LoginPage = () => {
   const [name, setName] = useState('');
@@ -34,37 +35,38 @@ const LoginPage = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Login</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="name"
-        value={name}
-        onChangeText={setName}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
-      />
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Login</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-        <Text style={styles.signupText}>Don't have an account? Sign up here</Text>
-      </TouchableOpacity>
-    </View>
+    <GlobalLayout>
+        <View style={styles.LoginContainer}>
+          <Text style={styles.title}>Login</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="name"
+            value={name}
+            onChangeText={setName}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            secureTextEntry
+            value={password}
+            onChangeText={setPassword}
+            />
+          <TouchableOpacity style={styles.button} onPress={handleLogin}>
+            <Text style={styles.buttonText}>Login</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+            <Text style={styles.signupText}>Don't have an account? Sign up here</Text>
+          </TouchableOpacity>
+        </View>
+      </GlobalLayout>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  LoginContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    flex:1,
   },
   title: {
     fontSize: 24,

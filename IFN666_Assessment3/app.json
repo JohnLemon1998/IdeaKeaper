@@ -1,6 +1,6 @@
 {
   "expo": {
-    "entryPoint": "app/App.js",
+    "entryPoint": "./App.js",
     "name": "IFN666_Assessment3",
     "slug": "IFN666_Assessment3",
     "version": "1.0.0",

@@ -5,6 +5,7 @@ import axios from 'axios';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import moment from 'moment';
+import { GlobalLayout } from "../components/Layout";
 
 const NoteDetail = () => {
   const route = useRoute();
@@ -69,6 +70,7 @@ const NoteDetail = () => {
   };
 
   return (
+    <GlobalLayout>
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={backToNotes} style={styles.backButton}>
@@ -90,13 +92,13 @@ const NoteDetail = () => {
             style={styles.titleInput}
             value={title}
             onChangeText={setTitle}
-          />
+            />
           <TextInput
             style={styles.contentInput}
             value={note}
             onChangeText={setNote}
             multiline
-          />
+            />
         </>
       ) : (
         <>
@@ -108,14 +110,14 @@ const NoteDetail = () => {
       )}
       </View>
     </View>
+    </GlobalLayout>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'whitesmoke',
-  },
+  container:{
+    flex:1,
+  }, 
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
