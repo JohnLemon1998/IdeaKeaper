@@ -1,13 +1,11 @@
 {
   "expo": {
-    "entryPoint": "./App.js",
-    "name": "IFN666_Assessment3",
-    "slug": "IFN666_Assessment3",
+    "name": "IFN666_Assessment3_frontend",
+    "slug": "IFN666_Assessment3_frontend",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/idea_keeper.png",
-    "scheme": "myapp",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/images/idea_keeper.png",
       "resizeMode": "contain",
@@ -23,15 +21,7 @@
       }
     },
     "web": {
-      "bundler": "metro",
-      "output": "static",
       "favicon": "./assets/images/idea_keeper.png"
-    },
-    "plugins": [
-      "expo-router"
-    ],
-    "experiments": {
-      "typedRoutes": true
     }
   }
 }

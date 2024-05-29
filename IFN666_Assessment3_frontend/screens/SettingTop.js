@@ -26,8 +26,7 @@ const SettingTop = () => {
   };
   
   return (
-    <GlobalLayout>
-      <View style={styles.container}>
+     <GlobalLayout>
         <View style={styles.header}>
           <TouchableOpacity onPress={backToNotes}>
             <Ionicons name="arrow-back" size={24} color="black" />
@@ -56,8 +55,7 @@ const SettingTop = () => {
           <Text style={styles.buttonText}>Change Password</Text>
         </TouchableOpacity>
         </View>
-      </View>
-    </GlobalLayout>
+      </GlobalLayout>
   );
 };
 
@@ -90,7 +88,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 40,
     marginBottom: 20,
-    backgroundColor : 'gainsboro',
+    backgroundColor : 'khaki',
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -98,7 +96,6 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   darkModeText: {
-    marginRight: 20,
     fontSize:20,
   },
   buttonText: {

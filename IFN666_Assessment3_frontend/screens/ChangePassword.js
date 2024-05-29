@@ -5,58 +5,74 @@ import { useRoute } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { GlobalLayout } from "../components/Layout";
+import { API_BASE_URL } from '@env';
 
-const ChangeUserName = () => {
+const ChangePassword = () => {
   const route = useRoute();
   const { userId } = route.params;
   const navigation = useNavigation();
-  const [newUserName, setNewUserName] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const backToSetting = () => {
     navigation.navigate('SettingTop', { userId });
   };
 
-  const handleChangeUserName = async () => {
+  const handleChangePassword = async () => {
+
+    if (newPassword !== confirmPassword) {
+        Alert.alert('Error', 'Passwords do not match');
+        return;
+      }
+
     try {
-        const response = await axios.put(`http://localhost:3000/api/users/${userId}/change-username`, {
-          newUserName,
+        const response = await axios.put(`${API_BASE_URL}/api/users/${userId}/change-password`, {
+          newPassword,
         });
   
         const data = response.data;
   
         if (data.error) {
-          console.error('Change username error:', data.message);
+          console.error('Change password error:', data.message);
         } else {
           navigation.goBack();
         }
       } catch (error) {
-        console.error('Change username error:', error);
+        console.error('Change password error:', error);
       }
     };
 
   return (
     <GlobalLayout>
       <View style={styles.header}>
-        <TouchableOpacity onPress={backToSetting}>
-          <Ionicons name="arrow-back" size={24} color="black" />
-        </TouchableOpacity>
-        <Text style={styles.headerText}>ChangePassword</Text>
-        <Text></Text>
-      </View>
-      <View style={styles.headerBorder}></View>
-
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="New User Name"
-          value={newUserName}
-          onChangeText={setNewUserName}
-          />
-        <TouchableOpacity style={styles.button} onPress={handleChangeUserName}>
-          <Text style={styles.buttonText}>Submit</Text>
-        </TouchableOpacity>
+          <TouchableOpacity onPress={backToSetting}>
+            <Ionicons name="arrow-back" size={24} color="black" />
+          </TouchableOpacity>
+          <Text style={styles.headerText}>ChangePassword</Text>
+          <Text></Text>
         </View>
-     </GlobalLayout>
+        <View style={styles.headerBorder}></View>
+
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="New Password"
+            secureTextEntry
+            value={newPassword}
+            onChangeText={setNewPassword}
+            />
+          <TextInput
+            style={styles.input}
+            placeholder="Confirm Password"
+            secureTextEntry
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+            />
+          <TouchableOpacity style={styles.button} onPress={handleChangePassword}>
+            <Text style={styles.buttonText}>Submit</Text>
+          </TouchableOpacity>
+          </View>
+    </GlobalLayout>
   );
 };
 
@@ -105,4 +121,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChangeUserName;
+export default ChangePassword;

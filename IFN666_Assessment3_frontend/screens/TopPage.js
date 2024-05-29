@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState,useCallback } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView  } from 'react-native';
 import axios from 'axios';
-import { useRoute,useNavigation } from '@react-navigation/native';
+import { useRoute,useNavigation,useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { GlobalLayout } from "../components/Layout";
+import { API_BASE_URL } from '@env';
 
 const TopPage = () => {
   const route = useRoute();
@@ -11,19 +12,21 @@ const TopPage = () => {
   const [notes, setNotes] = useState([]);
   const navigation = useNavigation();
 
-  useEffect(() => {
-    const fetchNotes = async () => {
-      try {
-        const response = await axios.get(`http://localhost:3000/api/note?userId=${userId}`);
-        const sortedNotes = response.data.notes.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
-        setNotes(sortedNotes);
-      } catch (error) {
-        console.error('Error:', error.message);
-      }
-    };
+  const fetchNotes = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/api/note?userId=${userId}`);
+      const sortedNotes = response.data.notes.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+      setNotes(sortedNotes);
+    } catch (error) {
+      console.error('Error:', error.message);
+    }
+  };
 
-    fetchNotes();
-  }, [userId]);
+  useFocusEffect(
+    useCallback(() => {
+      fetchNotes();
+    }, [userId])
+  );
 
   const handleAddNote = () => {
     navigation.navigate('AddNote', { userId:userId });
@@ -45,32 +48,30 @@ const TopPage = () => {
   return (
 
     <GlobalLayout>
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Notes</Text>
-
-        <View style={styles.buttonsContainer}>
-          <TouchableOpacity onPress={handleSettingTop}>
-            <Ionicons name="settings" size={24} color="black" />
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      <View style={styles.headerBorder}></View>
-
-      <ScrollView style={styles.scrollView}>
-        <View style={styles.notesContainer}>
-          {notes.map((note, index) => (
-             <TouchableOpacity key={index} style={styles.noteContainer} onPress={() => handleNotePress(note.id)}>
-              <View style={styles.note}>
-                <Text style={styles.noteTitle}>{note.title}</Text>
-                <Text numberOfLines={1} ellipsizeMode="tail" style={styles.noteContent}>{note.content}</Text>
-                <Text style={styles.date}>{formatDate(note.updated_at)}</Text>
-              </View>
+        <View style={styles.header}>
+          <Text style={styles.headerText}>Notes</Text>
+          <View style={styles.buttonsContainer}>
+            <TouchableOpacity onPress={handleSettingTop}>
+              <Ionicons name="settings" size={24} color="black" />
             </TouchableOpacity>
-          ))}
-        </View>
-      </ScrollView>
-
+          </View>
+       </View>
+    <View style={styles.headerBorder}></View>
+      <View style={styles.scrollViewContainer}>
+        <ScrollView style={styles.scrollView}>
+          <View style={styles.notesContainer}>
+            {notes.map((note, index) => (
+              <TouchableOpacity key={index} style={styles.noteContainer} onPress={() => handleNotePress(note.id)}>
+                <View style={styles.note}>
+                  <Text style={styles.noteTitle}>{note.title}</Text>
+                  <Text numberOfLines={1} ellipsizeMode="tail" style={styles.noteContent}>{note.content}</Text>
+                  <Text style={styles.date}>{formatDate(note.updated_at)}</Text>
+                </View>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </ScrollView>
+      </View>
       <TouchableOpacity style={styles.addButton} onPress={handleAddNote}>
         <Ionicons name="add" size={32} color="white" />
       </TouchableOpacity>
@@ -95,9 +96,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: 'gray',
   },
+  scrollViewContainer: {
+    flex: 1,
+  },
   scrollView: {
     flex: 1,
-    marginTop:3,
+    marginTop: 3,
   },
   notesContainer: {
     paddingHorizontal: 16,
@@ -120,12 +124,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginBottom: 8,
   },
-  noteContent : {
+  noteContent: {
     fontSize: 16,
     color: 'gray',
   },
-  date : {
-    marginTop :10,
+  date: {
+    marginTop: 10,
   },
   addButton: {
     position: 'absolute',
@@ -139,5 +143,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
+
 
 export default TopPage;

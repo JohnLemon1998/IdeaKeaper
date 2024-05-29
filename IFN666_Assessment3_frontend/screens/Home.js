@@ -1,15 +1,14 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { GlobalLayout } from "../components/Layout";
+import { GlobalLayout2 } from "../components/Layout";
 
-const index = () => {
+const Home = () => {
 
   const navigation = useNavigation();
 
   return (
-   <GlobalLayout>
-    <View style={styles.container}>
+   <GlobalLayout2>
       <Image
         source={require('../assets/images/homePageIcon.webp')}
         style={styles.image}
@@ -25,16 +24,11 @@ const index = () => {
           <Text style={styles.buttonText}>SignUp</Text>
         </TouchableOpacity>
       </View>
-     </View>
-    </GlobalLayout>
+    </GlobalLayout2>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   image: {
     width: '100%',
     height: 400,
@@ -70,4 +64,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default index;
+export default Home;

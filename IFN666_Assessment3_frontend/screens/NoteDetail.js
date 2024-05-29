@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import moment from 'moment';
 import { GlobalLayout } from "../components/Layout";
+import { API_BASE_URL } from '@env';
 
 const NoteDetail = () => {
   const route = useRoute();
@@ -19,7 +20,7 @@ const NoteDetail = () => {
   useEffect(() => {
     const fetchNote = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/note/${noteId}`);
+        const response = await axios.get(`${API_BASE_URL}/api/note/${noteId}`);
         setTitle(response.data.note.title);
         setNote(response.data.note.content);
         setDate(response.data.note.updated_at);
@@ -27,7 +28,6 @@ const NoteDetail = () => {
         Alert.alert('Error', 'Failed to fetch note. Please try again later.');
       }
     };
-
     fetchNote();
   }, [noteId]);
 
@@ -45,8 +45,8 @@ const NoteDetail = () => {
 
   const deleteNote = async () => {
     try {
-      await axios.delete(`http://localhost:3000/api/note/${noteId}`);
-      Alert.alert('Success', 'Note deleted successfully');
+      await axios.delete(`${API_BASE_URL}/api/note/${noteId}`);
+      Alert.alert('Deleted','the note has been removed from the list');
       backToNotes();
     } catch (error) {
       Alert.alert('Error', 'Failed to delete note. Please try again later.');
@@ -56,8 +56,7 @@ const NoteDetail = () => {
   const backToNotes = async () => {
     if (editMode) {
       try {
-        await axios.put(`http://localhost:3000/api/note/${noteId}`, { title, content: note });
-        Alert.alert('Success', 'Note updated successfully');
+        await axios.put(`${API_BASE_URL}/api/note/${noteId}`, { title, content: note });
       } catch (error) {
         Alert.alert('Error', 'Failed to update note. Please try again later.');
       }
@@ -71,7 +70,6 @@ const NoteDetail = () => {
 
   return (
     <GlobalLayout>
-    <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={backToNotes} style={styles.backButton}>
           <Ionicons name="arrow-back" size={24} color="black" />
@@ -79,7 +77,7 @@ const NoteDetail = () => {
         <Text style={styles.date}>
           {moment(date).format('MMMM D, YYYY')}
         </Text>
-        <TouchableOpacity onPress={deleteNote} style={styles.trashButton}>
+        <TouchableOpacity onPress={confirmDelete} style={styles.trashButton}>
           <Ionicons name="trash" size={24} color="black" />
         </TouchableOpacity>
       </View>
@@ -109,15 +107,11 @@ const NoteDetail = () => {
         </>
       )}
       </View>
-    </View>
     </GlobalLayout>
   );
 };
 
 const styles = StyleSheet.create({
-  container:{
-    flex:1,
-  }, 
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -169,7 +163,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     paddingHorizontal: 16,
     marginTop : 20,
-    height: 200,
   },
 });
 
