@@ -7,6 +7,8 @@ import { useNavigation } from '@react-navigation/native';
 import moment from 'moment';
 import { GlobalLayout } from "../components/Layout";
 import { API_BASE_URL } from '@env';
+import { GlobalStyles } from "../styles/global";
+import { useTheme } from '../context/theme';
 
 const NoteDetail = () => {
   const route = useRoute();
@@ -16,6 +18,8 @@ const NoteDetail = () => {
   const [note, setNote] = useState('');
   const [editMode, setEditMode] = useState(false);
   const [date, setDate] = useState('');
+  const globalstyles = GlobalStyles();
+  const { isDarkMode } = useTheme();
 
   useEffect(() => {
     const fetchNote = async () => {
@@ -72,27 +76,27 @@ const NoteDetail = () => {
     <GlobalLayout>
       <View style={styles.header}>
         <TouchableOpacity onPress={backToNotes} style={styles.backButton}>
-          <Ionicons name="arrow-back" size={24} color="black" />
+          <Ionicons name="arrow-back" size={24} color={isDarkMode ? "white" : "black"} />
         </TouchableOpacity>
-        <Text style={styles.date}>
+        <Text style={[styles.date,globalstyles.text]}>
           {moment(date).format('MMMM D, YYYY')}
         </Text>
         <TouchableOpacity onPress={confirmDelete} style={styles.trashButton}>
-          <Ionicons name="trash" size={24} color="black" />
+          <Ionicons name="trash" size={24} color={isDarkMode ? "white" : "black"} />
         </TouchableOpacity>
       </View>
       <View style={styles.headerBorder}></View>
       
-     <View style={styles.noteContainer}>
+     <View style={[styles.noteContainer,globalstyles.sticker]}>
       {editMode ? (
         <>
           <TextInput
-            style={styles.titleInput}
+            style={[styles.titleInput,globalstyles.text]}
             value={title}
             onChangeText={setTitle}
             />
           <TextInput
-            style={styles.contentInput}
+            style={[styles.contentInput,globalstyles.text]}
             value={note}
             onChangeText={setNote}
             multiline
@@ -101,8 +105,8 @@ const NoteDetail = () => {
       ) : (
         <>
           <TouchableOpacity onPress={handleEdit}>
-            <Text style={styles.title}>{title}</Text>
-            <Text style={styles.content}>{note}</Text>
+            <Text style={[styles.title,globalstyles.text]}>{title}</Text>
+            <Text style={[styles.content,globalstyles.text]}>{note}</Text>
           </TouchableOpacity>
         </>
       )}

@@ -1,12 +1,16 @@
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StyleSheet, View } from "react-native";
+import { GlobalStyles } from "../styles/global";
 
 export function GlobalLayout({ children }) {
+  
+  const globalstyles = GlobalStyles();
+  
   return (
     <SafeAreaView style={styles.safeArea}>
-       <View style={styles.container}>
+      <View style={globalstyles.background}>
         {children}
-       </View>
+      </View>
     </SafeAreaView>
   );
 }

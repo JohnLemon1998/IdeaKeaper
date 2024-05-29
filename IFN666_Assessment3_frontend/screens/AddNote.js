@@ -6,6 +6,8 @@ import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { GlobalLayout } from "../components/Layout";
 import { API_BASE_URL } from '@env';
+import { GlobalStyles } from "../styles/global";
+import { useTheme } from '../context/theme';
 
 const AddNote = () => {
   const route = useRoute();
@@ -13,6 +15,8 @@ const AddNote = () => {
   const navigation = useNavigation();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const globalstyles = GlobalStyles();
+  const { isDarkMode } = useTheme();
 
   const getTodayDate = () => {
     const today = new Date();
@@ -46,21 +50,21 @@ const AddNote = () => {
     <GlobalLayout>
       <View style={styles.header}>
         <TouchableOpacity onPress={backToNotes}>
-          <Ionicons name="arrow-back" size={24} color="black" />
+          <Ionicons name="arrow-back" size={24} color={isDarkMode ? "white" : "black"} />
         </TouchableOpacity>
-        <Text style={styles.headerText}>{getTodayDate()}</Text>
+        <Text style={[styles.headerText,globalstyles.text]}>{getTodayDate()}</Text>
         <Text></Text>
       </View>
       <View style={styles.headerBorder}></View>
-      <View style={styles.textContainer}>
-        <Text style={styles.label}>Title</Text>
+      <View style={[styles.textContainer,globalstyles.sticker]}>
+        <Text style={[styles.label,globalstyles.text]}>Title</Text>
         <TextInput
           style={styles.input}
           value={title}
           onChangeText={setTitle}
           placeholder="Enter note title"
         />
-        <Text style={styles.label}>Content</Text>
+        <Text style={[styles.label,globalstyles.text]}>Content</Text>
         <TextInput
           style={[styles.input, styles.textArea]}
           value={content}
@@ -69,7 +73,7 @@ const AddNote = () => {
           multiline={true}
         />
         <TouchableOpacity style={styles.button} onPress={handleSaveNote}>
-          <Text style={styles.buttonText}>Save Note</Text>
+          <Text style={[styles.buttonText,globalstyles.text]}>Save Note</Text>
         </TouchableOpacity>
       </View>
     </GlobalLayout>
@@ -111,6 +115,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 20,
     fontSize: 16,
+    backgroundColor: 'white',
   },
   textArea: {
     height: 300,

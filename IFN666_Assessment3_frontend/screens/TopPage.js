@@ -5,12 +5,16 @@ import { useRoute,useNavigation,useFocusEffect } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons';
 import { GlobalLayout } from "../components/Layout";
 import { API_BASE_URL } from '@env';
+import { GlobalStyles } from "../styles/global";
+import { useTheme } from '../context/theme';
 
 const TopPage = () => {
   const route = useRoute();
   const { userId } = route.params;
   const [notes, setNotes] = useState([]);
   const navigation = useNavigation();
+  const globalstyles = GlobalStyles();
+  const { isDarkMode } = useTheme();
 
   const fetchNotes = async () => {
     try {
@@ -49,10 +53,10 @@ const TopPage = () => {
 
     <GlobalLayout>
         <View style={styles.header}>
-          <Text style={styles.headerText}>Notes</Text>
+          <Text style={[styles.headerText,globalstyles.text]}>Notes</Text>
           <View style={styles.buttonsContainer}>
             <TouchableOpacity onPress={handleSettingTop}>
-              <Ionicons name="settings" size={24} color="black" />
+              <Ionicons name="settings" size={24} color={isDarkMode ? "white" : "black"}/>
             </TouchableOpacity>
           </View>
        </View>
@@ -62,17 +66,17 @@ const TopPage = () => {
           <View style={styles.notesContainer}>
             {notes.map((note, index) => (
               <TouchableOpacity key={index} style={styles.noteContainer} onPress={() => handleNotePress(note.id)}>
-                <View style={styles.note}>
-                  <Text style={styles.noteTitle}>{note.title}</Text>
-                  <Text numberOfLines={1} ellipsizeMode="tail" style={styles.noteContent}>{note.content}</Text>
-                  <Text style={styles.date}>{formatDate(note.updated_at)}</Text>
+                <View style={[styles.note,globalstyles.sticker]}>
+                  <Text style={[styles.noteTitle,globalstyles.text]}>{note.title}</Text>
+                  <Text numberOfLines={1} ellipsizeMode="tail" style={[styles.noteContent,globalstyles.text]}>{note.content}</Text>
+                  <Text style={[styles.date,globalstyles.text]}>{formatDate(note.updated_at)}</Text>
                 </View>
               </TouchableOpacity>
             ))}
           </View>
         </ScrollView>
       </View>
-      <TouchableOpacity style={styles.addButton} onPress={handleAddNote}>
+      <TouchableOpacity style={[styles.addButton,globalstyles.addButton]} onPress={handleAddNote}>
         <Ionicons name="add" size={32} color="white" />
       </TouchableOpacity>
     </GlobalLayout>
@@ -112,7 +116,6 @@ const styles = StyleSheet.create({
     marginTop: 0,
   },
   note: {
-    backgroundColor: 'khaki',
     paddingTop: 30,
     paddingRight: 30,
     paddingLeft: 30,
@@ -135,7 +138,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 30,
     right: 30,
-    backgroundColor: 'dodgerblue',
     width: 64,
     height: 64,
     borderRadius: 32,
