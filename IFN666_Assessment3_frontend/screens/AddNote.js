@@ -5,6 +5,7 @@ import { useRoute } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { GlobalLayout } from "../components/Layout";
+import { API_BASE_URL } from '@env';
 
 const AddNote = () => {
   const route = useRoute();
@@ -12,7 +13,6 @@ const AddNote = () => {
   const navigation = useNavigation();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
 
   const getTodayDate = () => {
     const today = new Date();
@@ -25,33 +25,22 @@ const AddNote = () => {
   const handleSaveNote = async () => {
     try {
       const Data = { userId, title, content };
-      const url = 'http://localhost:3000/api/note'; 
-      await axios.post(url, Data);
+      const url = `${API_BASE_URL}/api/note`; 
+      const response = await axios.post(url, Data);
 
-      navigation.navigate('TopPage', { userId });
-    } catch (error) {
-      if (error.response) {
-        setErrorMessage(error.response.data.message);
+      if (!response.data.error) {
+        backToNotes();
       } else {
-        setErrorMessage(error.message);
-      }
+        console.error('Error:', response.data.message);
+      }  
+    } catch (error) {
+      console.error('Error:', error.message);
     }
   };
 
   const backToNotes = () => {
     navigation.navigate('TopPage', { userId });
   };
-
-  const handleDismissError = () => {
-    setErrorMessage('');
-  };
-
-  useEffect(() => {
-    
-    if (errorMessage) {
-      Alert.alert('Error', errorMessage, [{ text: 'OK', onPress: handleDismissError }]);
-    }
-  }, [errorMessage]);
 
   return (
     <GlobalLayout>
