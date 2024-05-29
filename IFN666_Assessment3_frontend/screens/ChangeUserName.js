@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, TextInput, Alert } from 'react-native';
 import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
@@ -6,12 +6,16 @@ import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { GlobalLayout } from "../components/Layout";
 import { API_BASE_URL } from '@env';
+import { GlobalStyles } from "../styles/global";
+import { useTheme } from '../context/theme';
 
 const ChangeUserName = () => {
   const route = useRoute();
   const { userId } = route.params;
   const navigation = useNavigation();
   const [newUserName, setNewUserName] = useState('');
+  const globalstyles = GlobalStyles();
+  const { isDarkMode } = useTheme();
 
   const backToSetting = () => {
     navigation.navigate('SettingTop', { userId });
@@ -28,6 +32,7 @@ const ChangeUserName = () => {
         if (data.error) {
           console.error('Change username error:', data.message);
         } else {
+          Alert.alert("Updated","Password is successfully updated")
           navigation.goBack();
         }
       } catch (error) {
@@ -39,9 +44,9 @@ const ChangeUserName = () => {
     <GlobalLayout>
       <View style={styles.header}>
         <TouchableOpacity onPress={backToSetting}>
-          <Ionicons name="arrow-back" size={24} color="black" />
+          <Ionicons name="arrow-back" size={24} color={isDarkMode ? "white" : "black"} />
         </TouchableOpacity>
-        <Text style={styles.headerText}>ChangePassword</Text>
+        <Text style={[styles.headerText,globalstyles.text]}>Change UserName</Text>
         <Text></Text>
       </View>
       <View style={styles.headerBorder}></View>
@@ -90,7 +95,8 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     borderRadius: 5,
     marginBottom: 20,
-    paddingLeft: 10, 
+    paddingLeft: 10,
+    backgroundColor: 'white',
   },
   button: {
     height: 40,

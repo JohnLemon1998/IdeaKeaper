@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Switch } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
@@ -6,12 +5,14 @@ import { Ionicons } from '@expo/vector-icons';
 import { GlobalLayout } from "../components/Layout";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTheme } from '../context/theme';
+import { GlobalStyles } from "../styles/global";
 
 const SettingTop = () => {
   const route = useRoute();
   const { userId } = route.params;
   const navigation = useNavigation();
   const {isDarkMode, setIsDarkMode} = useTheme();
+  const globalstyles = GlobalStyles();
 
   const backToNotes = () => {
     navigation.navigate('TopPage', { userId });
@@ -29,16 +30,16 @@ const SettingTop = () => {
      <GlobalLayout>
         <View style={styles.header}>
           <TouchableOpacity onPress={backToNotes}>
-            <Ionicons name="arrow-back" size={24} color="black" />
+            <Ionicons name="arrow-back" size={24} color={isDarkMode ? "white" : "black"} />
           </TouchableOpacity>
-          <Text style={styles.headerText}>Settings</Text>
+          <Text style={[styles.headerText,globalstyles.text]}>Settings</Text>
           <Text></Text>
         </View>
         <View style={styles.headerBorder}></View>
 
        <View style={styles.settingContainer}>
-        <View style={[styles.buttonContainer,styles.sectionBorder]}>
-            <Text style={styles.darkModeText}>Dark Mode</Text>
+        <View style={[styles.sectionBorder,globalstyles.sticker]}>
+            <Text style={[styles.darkModeText,globalstyles.text]}>Dark Mode</Text>
           <Switch 
             value={isDarkMode}
             onValueChange={async () => {
@@ -48,11 +49,13 @@ const SettingTop = () => {
             trackColor={{ false: "#767577", true: "#81b0ff" }}
           />
         </View>
-        <TouchableOpacity style={styles.sectionBorder} onPress={goToChangeUserName}>
-          <Text style={styles.buttonText}>Change UserName</Text>
+        <TouchableOpacity style={[styles.sectionBorder,globalstyles.sticker]} onPress={goToChangeUserName}>
+          <Text style={[styles.buttonText,globalstyles.text]}>Change UserName</Text>
+          <Ionicons name="arrow-forward" size={24} color={isDarkMode ? "white" : "black"} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.sectionBorder} onPress={goToChangePassword}>
-          <Text style={styles.buttonText}>Change Password</Text>
+        <TouchableOpacity style={[styles.sectionBorder,globalstyles.sticker]} onPress={goToChangePassword}>
+          <Text style={[styles.buttonText,globalstyles.text]}>Change Password</Text>
+          <Ionicons name="arrow-forward" size={24} color={isDarkMode ? "white" : "black"} />
         </TouchableOpacity>
         </View>
       </GlobalLayout>
@@ -89,8 +92,6 @@ const styles = StyleSheet.create({
     padding: 40,
     marginBottom: 20,
     backgroundColor : 'khaki',
-  },
-  buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center'

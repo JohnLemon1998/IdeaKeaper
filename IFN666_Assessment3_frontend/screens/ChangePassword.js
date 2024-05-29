@@ -6,6 +6,8 @@ import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { GlobalLayout } from "../components/Layout";
 import { API_BASE_URL } from '@env';
+import { GlobalStyles } from "../styles/global";
+import { useTheme } from '../context/theme';
 
 const ChangePassword = () => {
   const route = useRoute();
@@ -13,6 +15,8 @@ const ChangePassword = () => {
   const navigation = useNavigation();
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const globalstyles = GlobalStyles();
+  const { isDarkMode } = useTheme();
 
   const backToSetting = () => {
     navigation.navigate('SettingTop', { userId });
@@ -35,6 +39,7 @@ const ChangePassword = () => {
         if (data.error) {
           console.error('Change password error:', data.message);
         } else {
+          Alert.alert("Updated","Password is successfully updated");
           navigation.goBack();
         }
       } catch (error) {
@@ -46,9 +51,9 @@ const ChangePassword = () => {
     <GlobalLayout>
       <View style={styles.header}>
           <TouchableOpacity onPress={backToSetting}>
-            <Ionicons name="arrow-back" size={24} color="black" />
+            <Ionicons name="arrow-back" size={24} color={isDarkMode ? "white" : "black"} />
           </TouchableOpacity>
-          <Text style={styles.headerText}>ChangePassword</Text>
+          <Text style={[styles.headerText,globalstyles.text]}>Change Password</Text>
           <Text></Text>
         </View>
         <View style={styles.headerBorder}></View>
@@ -106,6 +111,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 20,
     paddingLeft: 10, 
+    backgroundColor: 'white'
   },
   button: {
     height: 40,
