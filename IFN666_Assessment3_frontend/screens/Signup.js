@@ -10,12 +10,14 @@ const SignupPage = () => {
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
 
+  //function to handle signup
   const handleSignup = async () => {
     try {
       const userData = { name, password };
       const url = `${API_BASE_URL}/api/signup`; 
       const response = await axios.post(url, userData);
       
+      // Check if there's no error in the response data
       if (!response.data.error) {
         navigation.navigate('Login');
       } else {

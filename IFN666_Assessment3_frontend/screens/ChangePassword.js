@@ -18,68 +18,73 @@ const ChangePassword = () => {
   const globalstyles = GlobalStyles();
   const { isDarkMode } = useTheme();
 
+  // Function to navigate back to the settings page
   const backToSetting = () => {
     navigation.navigate('SettingTop', { userId });
   };
 
+  // Function to handle changing the password
   const handleChangePassword = async () => {
-
+    // Check if the new password and confirm password match
     if (newPassword !== confirmPassword) {
-        Alert.alert('Error', 'Passwords do not match');
-        return;
-      }
+      Alert.alert('Error', 'Passwords do not match');
+      return;
+    }
 
     try {
-        const response = await axios.put(`${API_BASE_URL}/api/users/${userId}/change-password`, {
-          newPassword,
-        });
-  
-        const data = response.data;
-  
-        if (data.error) {
-          console.error('Change password error:', data.message);
-        } else {
-          Alert.alert("Updated","Password is successfully updated");
-          navigation.goBack();
-        }
-      } catch (error) {
-        console.error('Change password error:', error);
+      // Make a PUT request to change the user's password
+      const response = await axios.put(`${API_BASE_URL}/api/users/${userId}/change-password`, {
+        newPassword,
+      });
+
+      const data = response.data;
+
+      // Check if there is an error in the response
+      if (data.error) {
+        console.error('Change password error:', data.message);
+      } else {
+        Alert.alert("Updated", "Password is successfully updated");
+        navigation.goBack(); // Navigate back to the previous screen
       }
-    };
+    } catch (error) {
+      console.error('Change password error:', error);
+    }
+  };
 
   return (
     <GlobalLayout>
       <View style={styles.header}>
-          <TouchableOpacity onPress={backToSetting}>
-            <Ionicons name="arrow-back" size={24} color={isDarkMode ? "white" : "black"} />
-          </TouchableOpacity>
-          <Text style={[styles.headerText,globalstyles.text]}>Change Password</Text>
-          <Text></Text>
-        </View>
-        <View style={styles.headerBorder}></View>
+        <TouchableOpacity onPress={backToSetting}>
+          <Ionicons name="arrow-back" size={24} color={isDarkMode ? "white" : "black"} />
+        </TouchableOpacity>
+        <Text style={[styles.headerText, globalstyles.text]}>Change Password</Text>
+        <Text></Text>
+      </View>
+      <View style={styles.headerBorder}></View>
 
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="New Password"
-            secureTextEntry
-            value={newPassword}
-            onChangeText={setNewPassword}
-            />
-          <TextInput
-            style={styles.input}
-            placeholder="Confirm Password"
-            secureTextEntry
-            value={confirmPassword}
-            onChangeText={setConfirmPassword}
-            />
-          <TouchableOpacity style={styles.button} onPress={handleChangePassword}>
-            <Text style={styles.buttonText}>Submit</Text>
-          </TouchableOpacity>
-          </View>
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="New Password"
+          secureTextEntry
+          value={newPassword}
+          onChangeText={setNewPassword}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Confirm Password"
+          secureTextEntry
+          value={confirmPassword}
+          onChangeText={setConfirmPassword}
+        />
+        <TouchableOpacity style={styles.button} onPress={handleChangePassword}>
+          <Text style={styles.buttonText}>Submit</Text>
+        </TouchableOpacity>
+      </View>
     </GlobalLayout>
   );
 };
+
 
 const styles = StyleSheet.create({
   header: {

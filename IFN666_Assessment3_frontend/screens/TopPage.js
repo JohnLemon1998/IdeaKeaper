@@ -18,7 +18,10 @@ const TopPage = () => {
 
   const fetchNotes = async () => {
     try {
+      // Send a GET request to fetch notes for the current user
       const response = await axios.get(`${API_BASE_URL}/api/note?userId=${userId}`);
+
+       // Sort the fetched notes based on the updated_at timestamp in descending order
       const sortedNotes = response.data.notes.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
       setNotes(sortedNotes);
     } catch (error) {
@@ -26,6 +29,7 @@ const TopPage = () => {
     }
   };
 
+  // Use the useFocusEffect hook to fetch notes whenever the screen gains focus
   useFocusEffect(
     useCallback(() => {
       fetchNotes();
@@ -50,7 +54,6 @@ const TopPage = () => {
   };
 
   return (
-
     <GlobalLayout>
         <View style={styles.header}>
           <Text style={[styles.headerText,globalstyles.text]}>Notes</Text>

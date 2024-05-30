@@ -10,35 +10,39 @@ import { GlobalStyles } from "../styles/global";
 import { useTheme } from '../context/theme';
 
 const ChangeUserName = () => {
-  const route = useRoute();
-  const { userId } = route.params;
-  const navigation = useNavigation();
-  const [newUserName, setNewUserName] = useState('');
-  const globalstyles = GlobalStyles();
+  const route = useRoute(); 
+  const { userId } = route.params; 
+  const navigation = useNavigation(); 
+  const [newUserName, setNewUserName] = useState(''); 
+  const globalstyles = GlobalStyles(); 
   const { isDarkMode } = useTheme();
 
+  // Function to navigate back to the settings page
   const backToSetting = () => {
     navigation.navigate('SettingTop', { userId });
   };
 
+  // Function to handle changing the username
   const handleChangeUserName = async () => {
     try {
-        const response = await axios.put(`${API_BASE_URL}/api/users/${userId}/change-username`, {
-          newUserName,
-        });
-  
-        const data = response.data;
-  
-        if (data.error) {
-          console.error('Change username error:', data.message);
-        } else {
-          Alert.alert("Updated","Password is successfully updated")
-          navigation.goBack();
-        }
-      } catch (error) {
-        console.error('Change username error:', error);
+      // Make a PUT request to change the user's username
+      const response = await axios.put(`${API_BASE_URL}/api/users/${userId}/change-username`, {
+        newUserName,
+      });
+
+      const data = response.data;
+
+      // Check if there is an error in the response
+      if (data.error) {
+        console.error('Change username error:', data.message);
+      } else {
+        Alert.alert("Updated", "Username is successfully updated");
+        navigation.goBack(); // Navigate back to the previous screen
       }
-    };
+    } catch (error) {
+      console.error('Change username error:', error);
+    }
+  };
 
   return (
     <GlobalLayout>

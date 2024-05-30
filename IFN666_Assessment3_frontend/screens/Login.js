@@ -9,8 +9,10 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
 
+  // Function to handle the login process
   const handleLogin = async() => {
     try {
+      // Send a POST request to the server to authenticate the user
       const response = await fetch(`${API_BASE_URL}/api/login`, {
         method: 'POST',
         headers: {
@@ -22,6 +24,7 @@ const LoginPage = () => {
       const data = await response.json();
       const userId = data.id;
 
+      // Check if there's an error in the response
       if (data.error) {
         Alert.alert('Login Error', data.message);
       } else {

@@ -11,16 +11,22 @@ import { GlobalStyles } from "../styles/global";
 import { useTheme } from '../context/theme';
 
 const NoteDetail = () => {
+  // Extracting parameters from the route
   const route = useRoute();
   const navigation = useNavigation();
   const { userId, noteId } = route.params;
+
+  // State variables to hold note details and edit mode
   const [title, setTitle] = useState('');
   const [note, setNote] = useState('');
   const [editMode, setEditMode] = useState(false);
   const [date, setDate] = useState('');
+  
+  // Global styles and theme mode
   const globalstyles = GlobalStyles();
   const { isDarkMode } = useTheme();
 
+  // Effect to fetch note details when component mounts
   useEffect(() => {
     const fetchNote = async () => {
       try {
@@ -29,12 +35,14 @@ const NoteDetail = () => {
         setNote(response.data.note.content);
         setDate(response.data.note.updated_at);
       } catch (error) {
+        // Alert the user if fetching the note fails
         Alert.alert('Error', 'Failed to fetch note. Please try again later.');
       }
     };
     fetchNote();
   }, [noteId]);
 
+  // Function to confirm note deletion
   const confirmDelete = () => {
     Alert.alert(
       'Delete Note',
@@ -47,27 +55,35 @@ const NoteDetail = () => {
     );
   };
 
+  // Function to delete the note
   const deleteNote = async () => {
     try {
       await axios.delete(`${API_BASE_URL}/api/note/${noteId}`);
-      Alert.alert('Deleted','the note has been removed from the list');
+      // Alert the user when the note is deleted successfully
+      Alert.alert('Deleted','The note has been removed from the list');
       backToNotes();
     } catch (error) {
+      // Alert the user if deleting the note fails
       Alert.alert('Error', 'Failed to delete note. Please try again later.');
     }
   };
 
+  // Function to navigate back to the notes list
   const backToNotes = async () => {
+    // Update the note if in edit mode before navigating back
     if (editMode) {
       try {
         await axios.put(`${API_BASE_URL}/api/note/${noteId}`, { title, content: note });
       } catch (error) {
+        // Alert the user if updating the note fails
         Alert.alert('Error', 'Failed to update note. Please try again later.');
       }
     }
+    // Navigate back to the 'TopPage' screen with the user ID as a parameter
     navigation.navigate('TopPage', { userId });
   };
 
+  // Function to enable edit mode
   const handleEdit = () => {
     setEditMode(true);
   };
