@@ -44,6 +44,10 @@ const TopPage = () => {
     navigation.navigate('SettingTop', { userId:userId });
   };
 
+  const handleInfo = () => {
+    navigation.navigate('Info', { userId:userId });
+  };
+
   const handleNotePress = (noteId) => {
     navigation.navigate('NoteDetail', { userId: userId, noteId: noteId });
   };
@@ -58,8 +62,11 @@ const TopPage = () => {
         <View style={styles.header}>
           <Text style={[styles.headerText,globalstyles.text]}>Notes</Text>
           <View style={styles.buttonsContainer}>
+            <TouchableOpacity onPress={handleInfo}>
+              <Ionicons name="information-circle" size={28} color={isDarkMode ? "white" : "black"} />
+            </TouchableOpacity>
             <TouchableOpacity onPress={handleSettingTop}>
-              <Ionicons name="settings" size={24} color={isDarkMode ? "white" : "black"}/>
+              <Ionicons name="settings" size={28} color={isDarkMode ? "white" : "black"}/>
             </TouchableOpacity>
           </View>
        </View>
@@ -102,6 +109,11 @@ const styles = StyleSheet.create({
   headerBorder: {
     borderBottomWidth: 1,
     borderBottomColor: 'gray',
+  },
+  buttonsContainer: {
+    flexDirection : 'row',
+    gap:20,
+    marginRight:5,
   },
   scrollViewContainer: {
     flex: 1,
