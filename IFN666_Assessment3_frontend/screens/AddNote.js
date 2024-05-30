@@ -18,6 +18,7 @@ const AddNote = () => {
   const globalstyles = GlobalStyles();
   const { isDarkMode } = useTheme();
 
+  // Function to get today's date in the format YYYY-MM-DD
   const getTodayDate = () => {
     const today = new Date();
     const year = today.getFullYear();
@@ -26,12 +27,14 @@ const AddNote = () => {
     return `${year}-${month}-${day}`;
   };
 
+  // Function to handle saving the note
   const handleSaveNote = async () => {
     try {
       const Data = { userId, title, content };
       const url = `${API_BASE_URL}/api/note`; 
       const response = await axios.post(url, Data);
 
+      // If there is no error in the response, navigate back to the notes
       if (!response.data.error) {
         backToNotes();
       } else {
@@ -42,6 +45,7 @@ const AddNote = () => {
     }
   };
 
+  // Function to navigate back to the notes page
   const backToNotes = () => {
     navigation.navigate('TopPage', { userId });
   };
@@ -52,19 +56,19 @@ const AddNote = () => {
         <TouchableOpacity onPress={backToNotes}>
           <Ionicons name="arrow-back" size={24} color={isDarkMode ? "white" : "black"} />
         </TouchableOpacity>
-        <Text style={[styles.headerText,globalstyles.text]}>{getTodayDate()}</Text>
+        <Text style={[styles.headerText, globalstyles.text]}>{getTodayDate()}</Text>
         <Text></Text>
       </View>
       <View style={styles.headerBorder}></View>
-      <View style={[styles.textContainer,globalstyles.sticker]}>
-        <Text style={[styles.label,globalstyles.text]}>Title</Text>
+      <View style={[styles.textContainer, globalstyles.sticker]}>
+        <Text style={[styles.label, globalstyles.text]}>Title</Text>
         <TextInput
           style={styles.input}
           value={title}
           onChangeText={setTitle}
           placeholder="Enter note title"
         />
-        <Text style={[styles.label,globalstyles.text]}>Content</Text>
+        <Text style={[styles.label, globalstyles.text]}>Content</Text>
         <TextInput
           style={[styles.input, styles.textArea]}
           value={content}
@@ -73,12 +77,13 @@ const AddNote = () => {
           multiline={true}
         />
         <TouchableOpacity style={styles.button} onPress={handleSaveNote}>
-          <Text style={[styles.buttonText,globalstyles.text]}>Save Note</Text>
+          <Text style={[styles.buttonText, globalstyles.text]}>Save Note</Text>
         </TouchableOpacity>
       </View>
     </GlobalLayout>
   );
 };
+
 
 const styles = StyleSheet.create({
   header: {
