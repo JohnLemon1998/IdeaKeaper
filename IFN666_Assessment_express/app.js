@@ -12,7 +12,6 @@ const swaggerUI = require("swagger-ui-express");
 const swaggerDocument = require("./docs/openai.json");
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 
 var app = express();
 
@@ -33,7 +32,6 @@ app.use((req, res, next) => {
 app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use("/version", (req, res) =>
   req.db.raw("SELECT VERSION()").then((version) => res.send(version[0][0]))
 );

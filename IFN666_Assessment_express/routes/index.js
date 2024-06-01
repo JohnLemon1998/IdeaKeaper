@@ -3,6 +3,7 @@ var router = express.Router();
 
 const bcrypt = require('bcrypt');
 
+//Sigin
 router.post("/api/signup", async (req, res) => {
   try {
     // Extract name and password from request body
@@ -22,7 +23,7 @@ router.post("/api/signup", async (req, res) => {
   }
 });
 
-// Login
+//Login
 router.post("/api/login", async (req, res) => {
   try {
     // Extract name and password from request body
@@ -44,6 +45,7 @@ router.post("/api/login", async (req, res) => {
   }
 });
 
+//Change userName
 router.put('/api/users/:userId/change-username', async(req, res) => {
   const userId = req.params.userId;
   const { newUserName } = req.body;
@@ -61,6 +63,7 @@ router.put('/api/users/:userId/change-username', async(req, res) => {
   res.json({ error: false, message: 'Username updated successfully' });
 });
 
+//Change password
 router.put('/api/users/:userId/change-password', async(req, res) => {
   const userId = req.params.userId;
   const { newPassword } = req.body;
@@ -81,6 +84,7 @@ router.put('/api/users/:userId/change-password', async(req, res) => {
   res.json({ error: false, message: 'Password updated successfully' });
 });
 
+//Get note
 router.get("/api/note", async (req, res) => {
   try {
     const userId = req.query.userId;
@@ -96,6 +100,7 @@ router.get("/api/note", async (req, res) => {
   }
 });
 
+//get note detail
 router.get("/api/note/:noteId", async (req, res) => {
   try {
     const noteId = req.params.noteId;
@@ -115,6 +120,7 @@ router.get("/api/note/:noteId", async (req, res) => {
   }
 });
 
+//save note
 router.post("/api/note", async (req, res) => {
   try {
     const { userId, title, content } = req.body;
@@ -134,6 +140,7 @@ router.post("/api/note", async (req, res) => {
   }
 });
 
+//edit note
 router.put("/api/note/:noteId", async (req, res) => {
   try {
     const noteId = req.params.noteId;
@@ -161,6 +168,7 @@ router.put("/api/note/:noteId", async (req, res) => {
   }
 });
 
+//delte note
 router.delete("/api/note/:noteId", async (req, res) => {
   try {
     const noteId = req.params.noteId;
