@@ -31,14 +31,41 @@ To run the Idea Keeper application locally, you'll need the following dependenci
   - Express.js
   - MySQL
 
+To set up MySQL:
+1. Open MySQL workbench
+2. Create new connection and change "/IFN666_Assessment_express/.env" file
+3. Run following command 
+   '''
+   CREATE DATABASE ideakeeper;
+
+   USE ideakeeper
+
+   CREATE TABLE notes (
+   id INT AUTO_INCREMENT PRIMARY KEY,
+   user_id INT NOT NULL,
+   title VARCHAR(255) NOT NULL,
+   content TEXT,
+   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+   FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+   CREATE TABLE users (
+    id INT PRIMARY KEY,
+    name VARCHAR(50),
+    password VARCHAR(255)
+);
+   '''
+
 To install the dependencies:
 
 1. Clone the repository to your local machine.
 2. Navigate to the respective frontend and backend directories.
 3. Run `npm install` to install the required dependencies for each component.
-4. $cd /IFN666_Assessment_express/ 
+4. change /IFN666_Aessment3_frontend/.env file  
+5. $cd /IFN666_Assessment_express/ 
    $npm start
-5. $cd /IFN666_Assessment3_frontend/
+6. $cd /IFN666_Assessment3_frontend/
    $npx expo start
 
 ## Application Architecture
